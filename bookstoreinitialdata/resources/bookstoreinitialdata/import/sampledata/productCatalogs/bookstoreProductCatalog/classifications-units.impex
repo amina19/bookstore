@@ -1,0 +1,19 @@
+# ImpEx for Importing Units into Telco Store
+
+# Macros / Replacement Parameter definitions
+$systemName=BookstoreClassification;
+$systemVersion=1.0;
+
+
+$sysVer=systemVersion(catalog(id[default='$systemName']),version[default='$systemVersion'])
+
+
+
+INSERT_UPDATE ClassificationAttributeUnit;code[unique=true];unitType;symbol;conversionFactor[default=1];$sysVer[unique=true]
+;MB;Number;MB
+;scheme;String;scheme
+;pages;Number;pages
+;duration;String;"HH:mm:ss"
+;format;String;format
+
+

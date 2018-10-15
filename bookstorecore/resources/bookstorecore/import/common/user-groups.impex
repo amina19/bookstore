@@ -1,0 +1,40 @@
+$customergroup=customergroup
+$passwordEncoding=md5
+$defaultPassword=12341234
+$setPassword=@password[translator=de.hybris.platform.impex.jalo.translators.ConvertPlaintextToEncodedUserPasswordTranslator][default='$passwordEncoding:$defaultPassword']
+
+
+# Customers
+INSERT_UPDATE Customer;uid[unique=true];name;groups(uid);$setPassword;points;rewardLevelStartDate[dateformat=dd.MM.yyyy];expireDate[dateformat=dd.MM.yyyy];rewardStatusLevel(code)
+;john@hybris.com;John;customergroup;;12;11.11.2013;11.11.2017;BLUE
+;lena@hybris.com;Lena;customergroup;;104;11.11.2013;11.11.2015;SILVER
+;sabine@hybris.com;Sabine;customergroup;;1012;11.11.2013;11.11.2015;GOLD
+
+
+INSERT_UPDATE CreditCardPaymentInfo;code[unique=true];user(uid)[unique=true];ccOwner;number;type(code);validToMonth;validToYear
+;ccpi-john;john@hybris.com;John;41111111;visa;05;2016;
+;ccpi-lena;lena@hybris.com;Lena;51111111;visa;11;2017;
+;ccpi-sabine;sabine@hybris.com;Sabine;61111111;visa;10;2017;
+
+# Customer addresses
+INSERT_UPDATE Address;&addId;owner(Customer.uid)[unique=true];streetname[unique=true];postalcode[unique=true];town;country(isocode);billingAddress;contactAddress;shippingAddress;unloadingAddress;phone1
+;john-address;john@hybris.com;Nymphenburgerstrasse 86;80636;Munich;DE;true;true;true;true;4917
+;lena-address;lena@hybris.com;Strasse 1;1223;Stuttgart;DE;true;true;true;true;4917
+;sabine-address;sabine@hybris.com;Street 3;33122;Dortmund;DE;true;true;true;true;4917
+
+
+#Set default address and payment info
+UPDATE Customer;uid[unique=true];defaultPaymentAddress(&addId);defaultShipmentAddress(&addId);
+;john@hybris.com;john-address;john-address;
+;lena@hybris.com;lena-address;lena-address;
+;sabine@hybris.com;sabine-address;sabine-address;
+
+####insert values for RewardStatusLevelConfiguration
+INSERT_UPDATE RewardStatusLevelConfiguration;configId[unique=true];threshold;rewardStatusLevel(code)
+;blue;0;BLUE
+;silver;100;SILVER
+;gold;1000;GOLD
+
+
+
+

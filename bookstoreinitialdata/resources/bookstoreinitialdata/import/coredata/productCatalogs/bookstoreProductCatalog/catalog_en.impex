@@ -1,0 +1,12 @@
+#
+# Import the Product Catalog and Classification Catalog
+#
+
+$productCatalog=bookstoreProductCatalog
+$classificationCatalog=BookstoreClassification
+$lang=en
+
+# Set Product Catalog Name (in English)
+UPDATE Catalog;id[unique=true];name[lang=$lang]
+;$productCatalog;Bookstore Product Catalog
+;$classificationCatalog;Bookstore Classification Catalog

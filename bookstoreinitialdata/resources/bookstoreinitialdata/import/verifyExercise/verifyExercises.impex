@@ -1,0 +1,32 @@
+INSERT_UPDATE Script; code[unique=true]; active[unique=true]; scriptType(code); content
+"#% beforeEach:
+import my.bookstore.initialdata.setup.InitialDataSystemSetup;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import java.io.IOException;
+String path = line.get(Integer.valueOf(4));
+if(StringUtils.isNotBlank(path) )
+{
+
+      try
+		{
+			InputStream is=InitialDataSystemSetup.class.getResourceAsStream(path);
+			line.put(Integer.valueOf(4),IOUtils.toString(is,""utf-8""));
+
+  		}catch (IOException e){
+			e.printStackTrace();
+		}
+}"
+
+;verifyExercise01 - Installation; true; GROOVY;/bookstoreinitialdata/import/verifyExercise/verifyExercise1.groovy
+;verifyExercise02 - Data Modeling; true; GROOVY;/bookstoreinitialdata/import/verifyExercise/verifyExercise2.groovy
+;verifyExercise03 - Product Modeling; true; GROOVY;/bookstoreinitialdata/import/verifyExercise/verifyExercise3.groovy
+;verifyExercise04 - ImpEx; true; GROOVY;/bookstoreinitialdata/import/verifyExercise/verifyExercise4.groovy
+;verifyExercise05 - Flexible Search; true; GROOVY;/bookstoreinitialdata/import/verifyExercise/verifyExercise5.groovy
+;verifyExercise06 - Services; true; GROOVY;/bookstoreinitialdata/import/verifyExercise/verifyExercise6.groovy
+;verifyExercise07 - CronJobs; true; GROOVY;/bookstoreinitialdata/import/verifyExercise/verifyExercise7.groovy
+;verifyExercise08 - Security; true; GROOVY;/bookstoreinitialdata/import/verifyExercise/verifyExercise8.groovy
+;verifyExercise09 - Workflow; true; GROOVY;/bookstoreinitialdata/import/verifyExercise/verifyExercise9.groovy
+;verifyExercise10 - Backoffice; true; GROOVY;/bookstoreinitialdata/import/verifyExercise/verifyExercise10.groovy
+;verifyExercise11 - Validation; true; GROOVY;/bookstoreinitialdata/import/verifyExercise/verifyExercise11.groovy
+#% beforeEach:end
