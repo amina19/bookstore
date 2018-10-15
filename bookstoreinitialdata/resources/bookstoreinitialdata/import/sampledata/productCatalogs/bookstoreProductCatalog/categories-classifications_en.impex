@@ -1,0 +1,33 @@
+# ImpEx for Importing Category Classifications
+
+# Macros / Replacement Parameter definitions
+$productCatalog=bookstoreProductCatalog
+$productCatalogName=Bookstore Product Catalog
+$classificationCatalog=BookstoreClassification
+
+$classCatalogVersion=catalogversion(catalog(id[default='$classificationCatalog']),version[default='1.0'])[unique=true,default='$classificationCatalog:1.0']
+$classSystemVersion=systemVersion(catalog(id[default='$classificationCatalog']),version[default='1.0'])[unique=true]
+
+# Language
+$lang=en
+
+# Insert Classifications
+UPDATE ClassificationClass;code[unique=true];$classCatalogVersion;name[lang=$lang]
+;dimensionclassification;;Dimension Classification
+;digitalclassification;;Digital Classification
+
+# Insert Classification Attributes
+UPDATE ClassificationAttribute;code[unique=true];name[lang=$lang];$classSystemVersion
+;DRM;DRM
+;pages;Pages
+;filesize;File Size
+;deliveryFormat;Delivery Format
+;length;Length
+
+# Insert Classification Units
+#INSERT_UPDATE ClassificationAttributeUnit;code[unique=true];name;symbol;$classSystemVersion
+#;scheme;Scheme;scheme
+#;pages;Pages;pages
+#;MB;Megabytes;MB
+#;duration;Duration;HH:mm:ss
+#;format;Format;format

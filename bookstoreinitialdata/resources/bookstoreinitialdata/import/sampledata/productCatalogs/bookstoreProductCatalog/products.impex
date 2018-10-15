@@ -1,0 +1,124 @@
+# ImpEx for Importing Products
+
+$productCatalog=bookstoreProductCatalog
+
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$supercategories=supercategories(code, $catalogVersion)
+$approved=approvalstatus(code)[default='approved']
+$lang=en
+
+# Insert Devices
+INSERT_UPDATE Book;code[unique=true];name[lang=$lang];$supercategories;unit(code)[default=pieces];$approved;$catalogVersion;rentable;rewardPoints;ISBN10;ISBN13;language;publisher
+;8942944779;The Strange Case of the Disappearing hybris Website;mystery,audioCD;;;;true;10;8942944779;3338942944779;$lang;Pinniped
+
+
+#<<<<<<   Automatically added    >>>>>>>
+
+$catalogVersion=catalogversion(catalog(id[default=bookstoreProductCatalog]),version[default='Staged'])[unique=true,default=bookstoreProductCatalog:Staged]
+
+#insert authors
+INSERT_UPDATE User;uid[unique=true];name
+;William Rattlespear;William Rattlespear
+;Thomas Hardly;Thomas Hardly
+;Mavis Jones;Mavis Jones
+;Shirley McSpane;Shirley McSpane
+;Cynthia Jesperson;Cynthia Jesperson
+;Noam Chumski;Noam Chumski
+;Gustav T. Winkelmann;Gustav T. Winkelmann
+;P.J. Smith;P.J. Smith
+;Henry Tudor;Henry Tudor
+;Charles Hardy;Charles Hardy
+;Dan Druff;Dan Druff
+;Marie Antoinette;Marie Antoinette
+;PC Dubois;PC Dubois
+;Archibald McTavish;Archibald McTavish
+;Richard Atkinson;Richard Atkinson
+;Alfred Addled;Alfred Addled
+;Dieter Furtwangler;Dieter Furtwangler
+;D.C. Ramakrishnan;D.C. Ramakrishnan
+;Cecelia Ploot;Cecelia Ploot
+;Bernard T. Blob;Bernard T. Blob
+;Bertrand Bussell;Bertrand Bussell
+;Alfred Ego;Alfred Ego
+;Peter Finkelstein;Peter Finkelstein
+;Barbara Cartload;Barbara Cartload
+;Bernard T. Blob;Bernard T. Blob
+;Simon Freud;Simon Freud
+;Stefan Martin;Stefan Martin
+;Spasoje Clause;Spasoje Clause
+;Jacek Konopelski;Jacek Konopelski
+;James T. Kirk;James T. Kirk
+;Rudolph R. Nose;Rudolph R. Nose
+;Radisa Pantic;Radisa Pantic
+;Nevena Antesevic;Nevena Antesevic
+;David Scheffel;David Scheffel
+;Charles Barton;Charles Barton
+;Luca Gennari;Luca Gennari
+;Phil Ladd;Phil Ladd
+;Marc Markovich;Marc Markovich
+;Iulia Gaina;Iulia Gaina
+
+
+
+# Insert Books
+INSERT_UPDATE Book;code[unique=true];name[lang=en];supercategories(code, $catalogVersion);unit(code)[default=pieces];approvalstatus(code)[default='approved'];$catalogVersion;rentable;rewardPoints;ISBN10;ISBN13;language;publisher;authors(uid)
+;2121888594;How to Make Friends and Infuriate People;self-help,audioCD;;;;true;4;2121888594;3332121888594;$lang;Hybris Classics Library;Thomas Hardly
+;1109070349;Two Gentlemen of Pamplona;thriller,audioCD;;;;true;8;1109070349;3331109070349;$lang;Hybris Classics Library;William Rattlespear
+;1178279359;Far from the Madding Shroud;drama,audioCD;;;;true;9;1178279359;3331178279359;$lang;Hybris Classics Library;Thomas Hardly
+;1210424959;Object-Oriented Methodology for Labrador Breeders;computerscience,hardcover;;;;false;7;1210424959;3331210424959;$lang;Hybris University Press;Mavis Jones,Shirley McSpane
+;1185574409;UML Changed My Life;computerscience,paperback;;;;false;6;1185574409;3331185574409;$lang;hybris AG;Shirley McSpane
+;1219543179;Design Patterns for the Elderly;computerscience,paperback;;;;false;7;1219543179;3331219543179;$lang;Hybris University Press;Cynthia Jesperson
+;1259714799;Syntactic Structures;kindle,computerscience;;;;false;5;1259714799;3331259714799;$lang;Hybris University Press;Noam Chumski
+;1274653819;Aspects of the Theory of Sin Tax;kindle,sciencefiction;;;;false;4;1274653819;3331274653819;$lang;Hybris University Press;Noam Chumski
+;1343905869;Project Management for Dummies and Vice Versa;paperback,computerscience;;;;false;3;1343905869;3331343905869;$lang;Hybris University Press;Gustav T. Winkelmann
+;1381254829;The Joy of Accounting - Part 5.3.2.c;paperback,horror;;;;false;7;1381254829;3331381254829;$lang;Hybris University Press;P.J. Smith
+;1389235939;Understanding the Feminine;paperback,self-help;;;;true;9;1389235939;3331389235939;$lang;Hybris Classics Library;Henry Tudor
+;1426604629;Undermining Organizations;hardcover,encyclopedia;;;;true;11;1426604629;3331426604629;$lang;Hybris University Press;Charles Hardy
+;1435356489;Dermatology from Scratch;hardcover,self-help;;;;true;11;1435356489;3331435356489;$lang;Hybris University Press;Dan Druff
+;1470296489;Keeping Your Head;self-help,audioCD;;;;true;12;1470296489;3331470296489;$lang;Hybris Classics Library;Marie Antoinette
+;1501089889;Ballistics for Page Developers;paperback,computerscience;;;;true;12;1501089889;3331501089889;$lang;Hybris Press International;PC Dubois
+;1601185839;COBOL - The Way Forward;paperback,computerscience;;;;true;8;1601185839;3331601185839;$lang;hybris AG;Archibald McTavish
+;1632331179;My Life as a Servlet;autobiography,audioCD;;;;true;9;1632331179;3331632331179;$lang;Hybris Classics Library;Richard Atkinson
+;1664834729;CORBA: You Know it Makes Sense;paperback,comedy;;;;false;9;1664834729;3331664834729;$lang;Hybris University Press;Alfred Addled
+;1666594679;Web Design: An Existentialist Approach;paperback,computerscience;;;;false;8;1666594679;3331666594679;$lang;Hybris University Press;Dieter Furtwangler
+;1670875989;Zen and the Art of Garbage Collection;mystery,kindle;;;;false;6;1670875989;3331670875989;$lang;Hybris University Press;D.C. Ramakrishnan
+;1728482569;Java Objects and the World Beyond;hardcover,fantasy;;;;true;10;1728482569;3331728482569;$lang;Hybris Press International;Cecelia Ploot
+;1863258019;Database Administration: A Study in Madness;hardcover,horror;;;;true;12;1863258019;3331863258019;$lang;Hybris University Press;Bernard T. Blob
+;1753481309;The Philosopher's Stone: A Kidney Patient Speaks;paperback,philosophy;;;;false;4;1753481309;3331753481309;$lang;Hybris Classics Library;Bertrand Bussell
+;1829089579;Compilers: Principles, Techniques and Fools;kindle,philosophy;;;;false;5;1829089579;3331829089579;$lang;Hybris University Press;Alfred Ego
+;1984482769;40 steps;paperback,crime;;;;false;8;1984482769;3331984482769;$lang;World publishing;Peter Finkelstein
+;2066436119;My Server and I;paperback,romance;;;;false;9;2066436119;3332066436119;$lang;Hybris Classics Library;Barbara Cartload
+;2100149369;Load Balancing for the Uninitiated;paperback,computerscience;;;;false;8;2100149369;3332100149369;$lang;Hybris Press International;Bernard T. Blob
+;2761735269;The Day my Session Failed;kindle,comedy;;;;false;6;2761735269;3332761735269;$lang;Hybris Press International;Simon Freud
+;4032442169;World around me;kindle,encyclopedia;;;;true;15;4032442169;3334032442169;$lang;World publishing;Stefan Martin
+;4445843199;How My Elves Adapted to e-Commerce;kindle,computerscience;;;;true;12;4445843199;3334445843199;$lang;hybris AG;Spasoje Clause
+;4482249629;First Step to Writing a Book;kindle,computerscience;;;;true;10;4482249629;3334482249629;$lang;hybris AG;Jacek Konopelski
+;4678255109;How to Be a Totally Awesome Starship Captain;kindle,fantasy;;;;true;8;4678255109;3334678255109;$lang;Starfleet Publications;James T. Kirk
+;4265613039;Rudolph the e-Commerce Reindeer;kindle,history;;;;true;9;4265613039;3334265613039;$lang;North Pole Publications;Rudolph R. Nose
+;4729720539;Hybris for Dummies;paperback,computerscience;;;;true;5;4729720539;3334729720539;$lang;Hybris Press International;Jacek Konopelski
+;5536152009;Hybris All in One;kindle,computerscience;;;;false;8;5536152009;3335536152009;$lang;Hybris Press International;Jacek Konopelski
+;5650539359;OMS Expert in 24 Hours;computerscience,audioCD;;;;true;9;5650539359;3335650539359;$lang;Hybris University Press;Jacek Konopelski
+;6824238759;The eCommerce Murderess;hardcover,thriller;;;;false;7;6824238759;3336824238759;$lang;Munich Press GmbH;Radisa Pantic
+;6493374189;The Programmer;kindle,sciencefiction;;;;true;1;6493374189;3336493374189;$lang;London Calling Press;Nevena Antesevic
+;6265644009;The Trainer's Secret;self-help,audioCD;;;;true;3;6265644009;3336265644009;$lang;Deutsche Presse-Agentur;David Scheffel
+;7313785739;History: India;hardcover,history;;;;false;5;7313785739;3337313785739;$lang;Apogeo;Charles Barton
+;8423207609;History of Pizza & Wine;kindle,history;;;;false;7;8423207609;3338423207609;$lang;Gibbs-Smith;Luca Gennari
+;8679478989;A Polyglot in London;mystery,audioCD;;;;true;5;8679478989;3338679478989;$lang;OUP;Phil Ladd
+;8685677009;English-Serbian dictionary;hardcover,dictionary;;;;true;7;8685677009;3338685677009;$lang;Recnik;Marc Markovich
+;9439522259;The Chicken or Egg Dilemma - Cracked;hardcover,philosophy;;;;true;5;9439522259;3339439522259;$lang;Hybris Classics Library;Iulia Gaina
+
+
+#Insert rentals
+
+INSERT_UPDATE Rental;rentalId[unique=true];startDate[dateformat=dd.MM.yyyy];endDate[dateformat=dd.MM.yyyy];product(code,$catalogVersion);customer(uid)
+;1;10.10.2014;10.11.2015;2121888594;john@hybris.com
+;2;10.10.2014;10.11.2016;9439522259;john@hybris.com
+;3;10.06.2014;15.06.2016;8679478989;lena@hybris.com
+;4;10.05.2014;15.05.2014;9439522259;sabine@hybris.com
+;5;10.08.2014;10.11.2014;6493374189;lena@hybris.com
+;6;12.01.2014;10.02.2014;9439522259;john@hybris.com
+;7;10.03.2014;10.04.2014;6493374189;sabine@hybris.com
+;8;10.06.2014;15.06.2014;6493374189;john@hybris.com
+;9;10.07.2014;20.07.2014;4678255109;sabine@hybris.com
+;10;03.03.2014;13.03.2014;4032442169;sabine@hybris.com
+;11;10.04.2014;10.05.2014;1863258019;lena@hybris.com

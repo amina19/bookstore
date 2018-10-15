@@ -1,0 +1,20 @@
+# ImpEx for Importing Units
+# English Localisation
+
+# Macros / Replacement Parameter definitions
+
+$systemName=BookstoreClassification;
+$systemVersion=1.0;
+$classficationCatalog=catalogVersion(catalog(id[default=$systemName]),version[default=$systemVersion]);
+
+$sysVer=systemVersion(catalog(id[default=$systemName]),version[default=$systemVersion])[unique=true];
+
+# Language
+$lang=en
+
+UPDATE ClassificationAttributeUnit;code[unique=true];name[lang=$lang];$sysVer
+;MB;Megabyte
+;scheme;Scheme
+;pages;Pages
+;duration;Duration
+;format;Format

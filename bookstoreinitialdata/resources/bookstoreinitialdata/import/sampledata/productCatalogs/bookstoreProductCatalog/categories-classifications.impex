@@ -1,0 +1,60 @@
+# Macros / Replacement Parameter definitions
+
+$systemName=BookstoreClassification;
+$systemVersion=1.0;
+$productCatalog=bookstoreProductCatalog
+$catVer=catalogVersion(version[default='Staged'],catalog(id[default=$productCatalog]));
+$clSysVer=catalogVersion(version[default='$systemVersion'],catalog(id[default='$systemName']));
+$productCatalogName=Bookstore Product Catalog
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$classCatalogVersion=catalogversion(catalog(id[default='$systemName']),version[default='1.0'])[unique=true,default='$systemName:1.0']
+$classSystemVersion=systemVersion(catalog(id[default='$systemName']),version[default='1.0'])[unique=true]
+$class=classificationClass(ClassificationClass.code,$classCatalogVersion)[unique=true]
+$supercategories=source(code, $classCatalogVersion)[unique=true]
+$categories=target(code, $classCatalogVersion)[unique=true]
+$attribute=classificationAttribute(code,$classSystemVersion)[unique=true]
+$unit=unit(code,$classSystemVersion)
+
+INSERT_UPDATE ClassificationSystem; id[unique=true]; name[lang=en];
+;$systemName;Bookstore ClassificationSystem;
+
+INSERT_UPDATE ClassificationSystemversion; catalog(id)[unique=true] ; version[unique=true] ; active ; writeprincipals(uid); languages(isocode); inclPacking[virtual=true,default=true]; inclDuty[virtual=true,default=true]; inclFreight[virtual=true,default=true]; inclAssurance[virtual=true,default=true]
+; $systemName ; $systemVersion ; true ; employeegroup;en;
+
+
+# Insert Classifications
+INSERT_UPDATE ClassificationClass;code[unique=true];allowedPrincipals(uid)[default='customergroup'];$classCatalogVersion
+;dimensionclassification
+;digitalclassification
+;audioclassification
+
+INSERT_UPDATE CategoryCategoryRelation;$categories;$supercategories
+;audioclassification;digitalclassification;
+
+# Insert Classification Attributes
+INSERT_UPDATE ClassificationAttribute;code[unique=true];$classSystemVersion
+;DRM
+;pages
+;filesize
+;deliveryFormat
+;length
+
+
+INSERT_UPDATE ClassAttributeAssignment;$class;$attribute;position;$unit;attributeType(code[default=string]);multiValued[default=false];range[default=false];localized[default=false];attributeValues(code,$classSystemVersion)
+;digitalclassification;DRM;0;scheme;string
+;digitalclassification;filesize;1;MB;number
+;digitalclassification;deliveryFormat;2;format;enum;false;;;MP3,MP4,PDF
+;dimensionclassification;pages;0;pages;number
+;audioclassification;length;0;duration;string
+
+   
+INSERT_UPDATE ClassificationAttributeValue;code[unique=true];$classSystemVersion
+;MP3
+;MP4
+;PDF
+
+UPDATE Category; $catVer[unique=true]; code[unique=true]; supercategories(code,$clSysVer)[mode=append];
+;;paperback;dimensionclassification;
+;;hardcover;dimensionclassification;
+;;kindle;digitalclassification;
+;;audioCD;audioclassification;

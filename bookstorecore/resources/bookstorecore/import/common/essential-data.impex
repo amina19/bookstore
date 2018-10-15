@@ -1,0 +1,126 @@
+# Import essential data for the Accelerator
+#
+# Includes:
+# * Languages
+# * Currencies
+# * Titles
+# * Vendors
+# * Warehouses
+# * Supported Credit/Debit cards
+# * User Groups
+# * DistanceUnits for Storelocator
+# * MediaFolders
+# * MediaFormats                               s
+# * Tax & Tax Groups
+# * Jobs
+#% impex.setLocale(Locale.GERMAN);
+
+# Languages
+INSERT_UPDATE Language;isocode[unique=true];fallbackLanguages(isocode);active[default=true]
+;en;;;
+;de;en;;
+;ja;en;;
+;zh;en;;
+
+# Currencies
+INSERT_UPDATE Currency;isocode[unique=true];conversion;digits;symbol
+;GBP;1;2;�
+;EUR;1;2;�
+;USD;1,4;2;$
+;JPY;120;0;�
+
+# Vendor
+INSERT_UPDATE Vendor;code[unique=true];name
+;default;Default Vendor
+
+# Disable preview for email pages
+UPDATE CMSPageType;code[unique=true];previewDisabled
+;EmailPage;true
+
+# Titles
+INSERT_UPDATE Title;code[unique=true]
+;mr
+;mrs
+;miss
+;ms
+;dr
+;rev
+
+# Media Folders
+INSERT_UPDATE MediaFolder;qualifier[unique=true];path[unique=true]
+;images;images
+;email-body;email-body
+;email-attachments;email-attachments
+
+# Media formats
+INSERT_UPDATE MediaFormat;qualifier[unique=true]
+;1200Wx1200H
+;515Wx515H
+;365Wx246H
+;300Wx300H
+;96Wx96H
+;65Wx65H
+;30Wx30H
+
+# Tax & Tax Groups
+INSERT_UPDATE UserTaxGroup;code[unique=true]
+;de-taxes
+;jp-taxes
+;uk-taxes
+;us-taxes
+;ca-taxes
+
+INSERT_UPDATE ProductTaxGroup;code[unique=true]
+;jp-vat-full
+;eu-vat-full
+;eu-vat-half
+;us-sales-tax-full
+;ca-sales-tax-full
+
+INSERT_UPDATE Tax;code[unique=true];value;currency(isocode)
+;de-vat-full;19
+;de-vat-half;7
+;jp-vat-full;5
+;uk-vat-full;20
+;uk-vat-half;5
+;us-sales-tax-full;0
+;ca-sales-tax-full;0
+
+INSERT_UPDATE ServicelayerJob;code[unique=true];springId[unique=true]
+;cartRemovalJob;cartRemovalJob
+;siteMapMediaJob;siteMapMediaJob
+
+# Solution for Exercise 7
+# The ServicelayerJob, referencing the Spring bean (not absolutely necessary, but replaces having to do an update)
+INSERT_UPDATE ServicelayerJob;code[unique=true];springId
+;bookstoreEmailJob;bookstoreEmailJob
+
+INSERT_UPDATE CronJob;code[unique=true];job(code);singleExecutable;sessionLanguage(isocode)
+;bookstoreEmailCronJob;bookstoreEmailJob;false;en
+
+INSERT_UPDATE Trigger;cronjob(code)[unique=true];cronExpression
+;bookstoreEmailCronJob; 0 0 0 * * ?
+
+INSERT_UPDATE PatternConstraint;active;descriptor(enclosingType(code),qualifier);id[unique=true];qualifier;target;type(code);regexp;flags(code);
+;true;Book:ISBN13;ISBN13SizeValidator;ISBN13;my.bookstore.core.model.BookModel;Book;\d{13};CASE_INSENSITIVE
+
+INSERT_UPDATE DynamicConstraint;active;id[unique=true];target;type(code);expression;language(code);
+"#% beforeEach:
+import my.bookstore.core.setup.CoreSystemSetup;
+import org.apache.commons.io.IOUtils;
+import java.io.InputStream;
+import java.io.IOException;
+
+      try
+		{
+			InputStream is=CoreSystemSetup.class.getResourceAsStream(""/bookstorecore/import/common/dynamicValidationScript.java"");
+			line.put(Integer.valueOf(5),IOUtils.toString(is,""utf-8""));
+
+  		}catch (IOException e){
+			e.printStackTrace();
+		}
+"
+;true;ISBN10FormatValidator;my.bookstore.core.model.BookModel;Book;"";BEANSHELL;
+#% beforeEach:end
+
+$de.hybris.platform.core.Registry.getApplicationContext().getBean(de.hybris.platform.validation.services.ValidationService.class).reloadValidationEngine()

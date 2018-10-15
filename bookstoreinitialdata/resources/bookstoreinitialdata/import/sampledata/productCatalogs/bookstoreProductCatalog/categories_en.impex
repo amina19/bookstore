@@ -1,0 +1,36 @@
+# ImpEx for Importing Categories
+
+# Macros / Replacement Parameter definitions
+$productCatalog=bookstoreProductCatalog
+$productCatalogName=Bookstore Product Catalog
+
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+
+# Language
+$lang=en
+
+# Create Categories
+UPDATE Category;code[unique=true];$catalogVersion;name[lang=$lang]
+;fiction;;Fiction
+;crime;;Crime
+;horror;;Horror
+;mystery;;Mystery
+;romance;;Romance
+;sciencefiction;;Science-Fiction
+;western;;Western
+;thriller;;Thriller
+;comedy;;Comedy
+;drama;;Drama
+;fantasy;;Fantasy
+;paperback;;Paperback
+;hardcover;;Hardcover
+;kindle;;Kindle
+;non-fiction;;Non-Fiction
+;computerscience;;Computer Science
+;autobiography;;Autobiography
+;dictionary;;Dictionary
+;encyclopedia;;Encyclopedia
+;history;;History
+;philosophy;;Philosophy
+;self-help;;Self-Help
+;audioCD;;Audio CD

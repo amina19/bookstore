@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- [y] hybris Platform Copyright (c) 2000-2013 hybris AG All rights reserved. 
+	This software is the confidential and proprietary information of hybris ("Confidential 
+	Information"). You shall not disclose such Confidential Information and shall 
+	use it only in accordance with the terms of the license agreement you entered 
+	into with hybris. -->
+
+
+<items xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="items.xsd">
+	<collectiontypes>
+		<collectiontype code="GenderList" elementtype="Gender"
+			            autocreate="true" generate="true" type="list" />
+		<collectiontype code="SwatchColorSet" elementtype="SwatchColorEnum"
+			            autocreate="true" generate="true" type="set" />
+	</collectiontypes>
+
+
+	<enumtypes>
+		<enumtype generate="true" code="SwatchColorEnum" autocreate="true"
+			      dynamic="true">
+			<value code="BLACK" />
+			<value code="BLUE" />
+			<value code="BROWN" />
+			<value code="GREEN" />
+			<value code="GREY" />
+			<value code="ORANGE" />
+			<value code="PINK" />
+			<value code="PURPLE" />
+			<value code="RED" />
+			<value code="SILVER" />
+			<value code="WHITE" />
+			<value code="YELLOW" />
+		</enumtype>
+
+		<enumtype code="RewardStatusLevel" autocreate="true"
+			      generate="true" dynamic="true">
+			<value code="BLUE" />
+			<value code="SILVER" />
+			<value code="GOLD" />
+		</enumtype>
+	</enumtypes>
+
+	<relations>
+
+		<relation code="Rental2CustomerRelation" generate="true" localized="false">
+			<sourceElement type="Rental" qualifier="rentals" cardinality="many" />
+			<targetElement type="Customer" qualifier="customer" cardinality="one" />
+		</relation>
+		<relation code="Rental2ProductRelation" generate="true" localized="false">
+			<sourceElement type="Rental" qualifier="rentals" cardinality="many" />
+			<targetElement type="Product" qualifier="product" cardinality="one" />
+		</relation>
+
+		<!-- TODO exercise 2.2: create "many to many" relation between Book and 
+			User (authors) as presented in UML. Remember to include a deployment tag 
+			because this is a many-to-many relation. -->
+		<relation code="Book2AuthorRelation" generate="true" localized="false">
+			<deployment table="BookAuthor" typecode="12345" />
+			<sourceElement type="Book" qualifier="books" cardinality="many" />
+			<targetElement type="User" qualifier="authors" cardinality="many" />
+		</relation>
+	</relations>
+
+
+	<itemtypes>
+	
+	
+	<!-- Bookstore item types begin-->
+	
+	
+		<itemtype code="Product" autocreate="false" generate="false">
+			<description>Description of the product that can be rented
+			</description>
+			<attributes>
+				<attribute qualifier="language" type="java.lang.String">
+					<description>Language</description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="ISBN10" type="java.lang.String">
+					<description>International Standard Book Number with 10 digits
+					</description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="ISBN13" type="java.lang.String">
+					<description>International Standard Book Number with 13 digits
+					</description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="publisher" type="java.lang.String">
+					<description>Publisher of the book/magazine/newspaper</description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="publishedDate" type="java.util.Date">
+					<description>Publisher of the book/magazine/newspaper</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="rentable" type="java.lang.Boolean">
+					<description>Check if the product is rentable</description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="rewardPoints" type="java.lang.Integer">
+					<description>Number of points that every product brings
+					</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+		</itemtype>
+		
+		
+		<!-- TODO exercise 2.1: define Book itemtype with attributes from UML; i.e, 
+			edition. Remember it's a sub-type of product! -->
+			
+		<itemtype code="Book" extends="Product" autocreate="true"
+			generate="true">
+			<attributes>
+				<attribute qualifier="edition" type="java.lang.String">
+					<description>Book edition</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="publication" type="java.lang.Integer">
+					<description>Book publication</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+		</itemtype>
+
+		<itemtype code="Customer" autocreate="false" generate="false">
+			<description>Represents user who rented book/magazine/newspaper
+			</description>
+			<attributes>
+				<attribute qualifier="points" type="java.lang.Integer">
+					<description>Number of collected points</description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+
+				<attribute qualifier="rewardLevelStartDate" type="java.util.Date">
+					<description></description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+
+				<attribute qualifier="expireDate" type="java.util.Date">
+					<description>Date when user account will expire</description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<!-- dynamic attribute: Have a look! -->
+				<attribute qualifier="pointToNextLevel" type="java.lang.Integer">
+					<description>Number of points needed for next level</description>
+					<modifiers optional="true" />
+					<persistence type="dynamic" attributeHandler="pointToNextLevelAttrHandler" />
+				</attribute>
+				
+				<!-- TODO exercise 2.3: finish Customer itemtype with attribute from UML: rewardStatusLevel -->
+				<attribute qualifier="rewardStatusLevel" type="RewardStatusLevel">
+					<description>Status level for user</description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+
+		</itemtype>
+
+		<itemtype code="Rental" autocreate="true" generate="true">
+			<description>Represents every rental in system</description>
+			<deployment table="Rental" typecode="12347" />
+			<attributes>
+				<attribute qualifier="rentalId" type="java.lang.Integer">
+					<description>Unique identifier</description>
+					<modifiers optional="false" unique="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="startDate" type="java.util.Date">
+					<description>start date of rental</description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="endDate" type="java.util.Date">
+					<description>end date of rental</description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+		</itemtype>
+
+
+
+		<itemtype code="RewardStatusLevelConfiguration" autocreate="true"
+			generate="true">
+			<deployment table="RewardStatusLevelConf" typecode="12348" />
+			<attributes>
+				<attribute type="java.lang.String" qualifier="configId">
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute type="java.lang.Integer" qualifier="threshold">
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute type="Media" qualifier="image">
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="rewardStatusLevel" type="RewardStatusLevel">
+					<description>Status level for user</description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+		</itemtype>
+		
+		
+		<!-- Bookstore item types end-->
+
+
+		<typegroup name="Apparel">
+			<itemtype code="ApparelProduct" extends="Product"
+				      autocreate="true" generate="true" jaloclass="my.bookstore.core.jalo.ApparelProduct">
+				<description>
+				    Base apparel product extension that contains additional
+					attributes.
+				</description>
+				<attributes>
+					<attribute qualifier="genders" type="GenderList">
+						<description>
+						    List of genders that the ApparelProduct is designed for
+						</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+				</attributes>
+			</itemtype>
+
+			<itemtype code="ApparelStyleVariantProduct" extends="VariantProduct"
+				      autocreate="true" generate="true"
+				      jaloclass="my.bookstore.core.jalo.ApparelStyleVariantProduct">
+				<description>
+				    Apparel style variant type that contains additional
+					attribute describing variant style.
+				</description>
+				<attributes>
+					<attribute qualifier="style" type="localized:java.lang.String"
+						       metatype="VariantAttributeDescriptor">
+						<description>Color/Pattern of the product.</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+
+					<attribute qualifier="swatchColors" type="SwatchColorSet">
+						<description>
+						    A normalized color mapping to a standardized
+							front-end navigable name.
+						</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+				</attributes>
+
+			</itemtype>
+
+			<itemtype code="ApparelSizeVariantProduct" extends="ApparelStyleVariantProduct"
+				      autocreate="true" generate="true"
+				      jaloclass="my.bookstore.core.jalo.ApparelSizeVariantProduct">
+				<description>
+				    Apparel size variant type that contains additional
+					attribute describing variant size.
+				</description>
+				<attributes>
+					<attribute qualifier="size" type="localized:java.lang.String"
+						       metatype="VariantAttributeDescriptor">
+						<description>Size of the product.</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+				</attributes>
+			</itemtype>
+		</typegroup>
+
+		<typegroup name="Electronics">
+			<itemtype code="ElectronicsColorVariantProduct" extends="VariantProduct"
+				      autocreate="true" generate="true"
+				      jaloclass="my.bookstore.core.jalo.ElectronicsColorVariantProduct">
+				<description>
+				    Electronics color variant type that contains additional
+					attribute describing variant color.
+				</description>
+				<attributes>
+					<attribute qualifier="color" type="localized:java.lang.String"
+						       metatype="VariantAttributeDescriptor">
+						<description>Color of the product.</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+				</attributes>
+			</itemtype>
+		</typegroup>
+
+
+
+	</itemtypes>
+</items>
